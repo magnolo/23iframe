@@ -1,0 +1,18 @@
+<md-content layout-padding class="country-chooser">
+  <div class="mobile-space">
+    <md-input-container class="md-block no-margin-bottom">
+      <label>Choose country</label>
+      <md-select ng-model="vm.nation" aria-label="Choose Country from List" ng-change="vm.changed({nation:vm.nation})">
+        <md-option ng-value="nation" ng-repeat="(key, nation) in vm.countries | orderBy:'country' ">{{ nation.country }}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div class="sub-title" ng-if="vm.selected && vm.nation.iso">
+    <ul rn-carousel rn-carousel-controls rn-carousel-controls-allow-loop rn-carousel-index="vm.index">
+      <li ng-repeat="chapter in vm.activeList">
+        <div class="colored">{{ chapter.title }}</div>
+      </li>
+    </ul>
+  </div>
+</md-content>

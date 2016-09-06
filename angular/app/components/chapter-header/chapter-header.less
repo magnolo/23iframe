@@ -1,0 +1,123 @@
+@import (less) '../../../material/colors.less';
+.Header{
+	transition: all 1s ease-in-out;
+	min-height:48px;
+	max-height:48px;
+	background-color: #fff !important;
+  border-bottom:1px solid @grey-light;
+	//box-shadow: 0px 0px 5px @base;
+	.md-toolbar-tools, md-toolbar{
+		height:48px;
+		min-height:48px;
+		padding-left:12px;
+	}
+	h2{
+		max-height: 48px;
+	}
+	a{
+		color:@base;
+		&.md-button{
+			span{
+				color:@base;
+			}
+		}
+	}
+	.md-menu{
+		padding:0px;
+	}
+	.inline-list{
+		&.menu-list{
+			li{
+				a, &::before{
+					color:@base;
+				}
+			}
+		}
+	}
+	.logo{
+		font-size:3em;
+	}
+}
+md-toolbar{
+	&.Header{
+		.md-button{
+			&.md-border{
+				color:@base;
+			}
+		}
+	}
+}
+
+.chapter {
+    font-weight: bold;
+    margin-right: 1em;
+}
+.md-button {
+    &.rounded {
+        border: 1px solid;
+        position: relative;
+        margin: 0;
+        overflow: visible;
+        span {
+            margin: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        &.active {
+            > span {
+                font-size: 1.2em;
+                font-weight: bold;
+                margin-top: -2px;
+                display: block;
+            }
+            margin: 0 6px 0 5px;
+        }
+        &:not(.active) {
+            transform: scale(0.8);
+        }
+        &::after {
+            content: ' ';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            border-top: 1px solid;
+            height: 1px;
+            width: 12px;
+        }
+        &:last-child {
+            &::after {
+                border: 0;
+            }
+        }
+        &:first-child {
+            &.active {
+                margin-left: 0;
+            }
+        }
+    }
+}
+.customer-logo {
+    position: fixed;
+    right: 0.5em;
+    z-index: 100;
+    width: 100px;
+    height: 100px;
+    top: calc(~'48px + 0.5em');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+.data-button {
+    position: fixed;
+    left: 415px;
+    top: 50px;
+    .md-button.md-raised,
+    .md-button.md-raised:not([disabled]):hover {
+        color: #fff;
+    }
+    @media screen and (max-width: 959px) {
+        z-index: 1;
+        left: auto;
+        right: 0;
+        top: 0;
+    }
+}

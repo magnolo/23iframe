@@ -1,0 +1,7 @@
+<md-input-container class="md-block no-margin">
+  <md-select ng-model="vm.selectedItem" aria-label="Select Indidicator" ng-change="vm.onChange()">
+      <md-optgroup label="{{item.title}}"  ng-style="{'color': vm.baseColor}" ng-repeat="item in vm.items">
+        <md-option ng-value="item" >{{ item.title}}</md-option>
+      </md-optgroup>
+  </md-select>
+ </md-input-container>
