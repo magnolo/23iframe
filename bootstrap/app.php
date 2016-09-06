@@ -97,8 +97,9 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../app/Http/routes.php';
 });
 
+class_alias('Illuminate\Support\Facades\File', 'File');
 if (env('APP_DEBUG')) {
- $app->register(Barryvdh\Debugbar\LumenServiceProvider::class);
+ //$app->register(Barryvdh\Debugbar\LumenServiceProvider::class);
  $app->register(LaravelAngular\Generators\LaravelServiceProvider::class);
 }
 

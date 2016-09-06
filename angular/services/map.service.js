@@ -9,7 +9,7 @@ export class MapService{
 
         this.fallbackBasemap = {
             name: 'Outdoor',
-            url: 'https://{s}.tiles.mapbox.com/v4/valderrama.d86114b6/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFnbm9sbyIsImEiOiJuSFdUYkg4In0.5HOykKk0pNP1N3isfPQGTQ',
+            url: '',
             type: 'xyz',
             layerOptions: {
                 noWrap: true,
@@ -305,7 +305,7 @@ export class MapService{
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, 257, 10);
         this.palette = this.ctx.getImageData(0, 0, 257, 1).data;
-
+        document.getElementsByTagName('body')[0].appendChild(this.canvas);
     }
 
     updateFixedCanvas(colorRange) {

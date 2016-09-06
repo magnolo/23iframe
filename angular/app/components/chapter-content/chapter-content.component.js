@@ -66,7 +66,7 @@ class ChapterContentController {
     }
     countryExistsInData(iso) {
         var found = false;
-        angular.forEach(this.data, (item)  => {
+        angular.forEach(this.data, (item) => {
             if (item.iso == iso) {
                 found = true;
             }
@@ -89,9 +89,15 @@ class ChapterContentController {
                     height: 60,
                     fontSize: 12
                 };
+                this.compareOptions = {field: 'score', height: 25, margin:5, color:this.ExportService.indicator.style.base_color, duration:500, min:this.structure.min, max:this.structure.max}
+
+                if (typeof item.style.color_range == "string") {
+                    item.style.color_range = JSON.parse(item.style.color_range);
+                }
+
                 this.MapService.setBaseLayer(item.style.basemap);
                 this.MapService.setMapDefaults(item.style);
-                this.MapService.setData(indicator.data, indicator, item.style.base_color, true);
+                this.MapService.setData(indicator.data, indicator, item.style.color_range ||  item.style.base_color, true);
 
                 if (angular.isFunction(callback)) {
                     callback();
@@ -194,7 +200,26 @@ class ChapterContentController {
             }
         }
     }
+    setCompare(activate) {
+			if (activate) {
+				this.compare = true;
+				this.countriesList[0] = this.selectedCountry;
+				this.MapService.invertStyle();
+				this.$state.go('app.export.detail.chapter.indicator.country.compare', {
+					countries: this.compareList.join('-vs-')
+				});
+			} else {
+				this.compare = false;
+				this.MapService.localStyle();
+				this.$state.go('app.export.detail.chapter.indicator.country');
+				this.MapService.setSelectedFeature(this.$state.params.iso, true);
 
+				//muss nicht sein
+				this.compareList = [];
+				this.countriesList = [];
+			}
+
+		}
     addCompareCountry(iso, withRemove) {
         if (iso == this.selectedCountry.iso)
             return false;
