@@ -92,6 +92,11 @@ export class MapService{
             maxZoom: 6,
             zoomControlPosition:'bottomright'
         };
+
+        //Leaflet Config: Controls Settings
+        this.controls  ={
+          custom:[]
+        }
         //Leafet Config: Lengende in der Map
         this.legend = {};
 
@@ -150,6 +155,7 @@ export class MapService{
     }
 
     setBaseLayer(basemap, dataprovider) {
+
         if (!basemap) {
             this.basemap = basemap = this.fallbackBasemap;
         }
@@ -221,7 +227,13 @@ export class MapService{
     resetBaseLayer() {
         this.layers.baselayers['xyz'] = this.baselayer;
     }
-
+    resetMap(){
+      this.mapLayer.eachLayer((layer) => {
+        layer.setOpacity(0);
+      });
+      this.setBaseLayer();
+      this.legend = null;
+    }
     setLayer(l) {
         return this.data.layer = l;
     }
@@ -257,6 +269,7 @@ export class MapService{
     }
 
     createCanvas(color) {
+      console.log(color)
         //Erstellt canvas DOM-Element
         this.canvas = this.$window.document.createElement('canvas');
         //Dimensionen des canvas elements
@@ -293,7 +306,7 @@ export class MapService{
 
     createFixedCanvas(colorRange) {
 
-        this.canvas = this.$document.createElement('canvas');
+        this.canvas = this.$window.document.createElement('canvas');
         this.canvas.width = 280;
         this.canvas.height = 10;
         this.ctx = this.canvas.getContext('2d');
@@ -305,7 +318,7 @@ export class MapService{
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, 257, 10);
         this.palette = this.ctx.getImageData(0, 0, 257, 1).data;
-        document.getElementsByTagName('body')[0].appendChild(this.canvas);
+        //document.getElementsByTagName('body')[0].appendChild(this.canvas);
     }
 
     updateFixedCanvas(colorRange) {
@@ -318,7 +331,16 @@ export class MapService{
         this.palette = this.ctx.getImageData(0, 0, 257, 1).data;
         //document.getElementsByTagName('body')[0].appendChild(this.canvas);
     }
-
+    parseColorRange(range){
+      if(!range) return range;
+      if(range.indexOf('\\') > -1){
+        range = this.parseColorRange(JSON.parse(range));
+      }
+      if(typeof range === "string"){
+        range = this.parseColorRange(JSON.parse(range));
+      }
+      return range;
+    }
     setBaseColor(color) {
         return this.data.baseColor = color;
     }
@@ -354,6 +376,7 @@ export class MapService{
     setData(data, structure, color, drawIt) {
         this.map.data = data;
         this.map.structure = structure;
+
         if (angular.isDefined(color)) {
             this.data.baseColor = color;
         }
@@ -373,6 +396,11 @@ export class MapService{
         if (drawIt) {
             this.paintCountries();
         }
+        this.mapLayer.eachLayer((layer) => {
+          layer.setOpacity(1);
+        });
+
+
     }
 
     getNationByIso(iso, list) {
@@ -401,7 +429,7 @@ export class MapService{
     }
 
     paintCountries(style, click) {
-
+        this.data.layer.setOpacity(0);
         this.$timeout(
             () => {
                 if (angular.isDefined(style) && style != null) {
@@ -414,6 +442,7 @@ export class MapService{
                     this.data.layer.options.onClick = click;
                 }
                 this.data.layer.redraw();
+                this.data.layer.setOpacity(1);
             }
         );
     }

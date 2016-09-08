@@ -1,8 +1,8 @@
 export function RoutesRun($log, $rootScope, $state) {
     'ngInject';
 
-
-    let deregisterationCallback =  $rootScope.$on("$stateChangeStart", function(event, toState) {
+    $rootScope.isLoading = true;
+    let deregisterationCallback =  $rootScope.$on("$stateChangeStart",(event, toState)  => {
 
         $rootScope.providerAddress = 'http://dev.23degree.org';
 
@@ -13,6 +13,12 @@ export function RoutesRun($log, $rootScope, $state) {
             else {
                 $rootScope.fullscreenView = false;
             }
+
+
+    });
+    $rootScope.$on("$stateChangeSuccess",(event, toState)  => {
+
+        $rootScope.isLoading = false;
 
 
     });

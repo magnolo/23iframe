@@ -18,7 +18,7 @@ angular.module('app.config', []);
 angular.module('app.directives', ['ui-leaflet']);
 angular.module('app.components', [
 	'ui.router', 'ngMaterial', 'angular-loading-bar',
-	'restangular', 'ngStorage',
+	'restangular', 'ngStorage', 'ngSanitize',
 	'angular-carousel','nvd3'
 ]);
 angular.module('app.controllers', []);

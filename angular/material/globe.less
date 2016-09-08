@@ -1,0 +1,31 @@
+@import (less) 'colors.less';
+.globe {
+  border: 2px solid @base;
+  border-radius: 50%;
+  height: 75px;
+  left: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  background-color: #fff;
+  svg {
+    animation: rotation 5s linear 0s infinite;
+
+    path {
+      stroke: @base;
+      stroke-width:1px;
+    }
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: translateX(0);
+  }
+
+  from {
+    transform: translateX(-50%);
+  }
+}

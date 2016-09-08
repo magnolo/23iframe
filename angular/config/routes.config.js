@@ -10,13 +10,13 @@ export function RoutesConfig($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('app', {
 			abstract: true,
-            data: {},//{auth: true} would require JWT auth
+      data: {},//{auth: true} would require JWT auth
 			views: {
 				header: {
 					templateUrl: getView('header')
 				},
 				main: {},
-                'map@': {
+                'main@': {
                     templateUrl: getView('test-view')
                 }
 			}
@@ -62,25 +62,12 @@ export function RoutesConfig($stateProvider, $urlRouterProvider) {
                 },
                 'sidebar@': {
                     templateUrl: getView('chapterContent')
-                },
-                'main@': {
-                    templateUrl: getView('test-view')
                 }
+
             }
         })
         .state('app.export.detail.chapter.indicator', {
             url:'/:indicator/:indiname',
-            views: {
-                'header@': {
-                    templateUrl: getView('header')
-                },
-                'sidebar@': {
-                    templateUrl: getView('chapterContent')
-                },
-                'main@': {
-                    templateUrl: getView('test-view')
-                }
-            }
         })
         .state('app.export.detail.chapter.indicator.country', {
             url:'/:iso'

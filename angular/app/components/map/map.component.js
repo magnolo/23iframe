@@ -25,9 +25,6 @@ class MapController{
                 lng: -180
             }
         };
-        this.controls = {
-            custom: []
-        };
         this.layercontrol = {
             icons: {
                 uncheck: "fa fa-toggle-off",

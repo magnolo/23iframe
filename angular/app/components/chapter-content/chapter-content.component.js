@@ -33,37 +33,53 @@ class ChapterContentController {
 
         //
         this.MapService.countryClick((data) => {
-            this.$log.log(data);
-            if (!this.countryExistsInData(data.feature.id)) return false;
-            if (this.compare) {
-                this.addCompareCountry(data.feature.id, true)
-                this.showComparison();
-            } else {
-                $state.go('app.export.detail.chapter.indicator.country', {
-                    indicator: this.ExportService.indicator.indicator_id,
-                    indiname: this.ExportService.indicator.name,
-                    iso: data.feature.id
-                });
-                //$rootScope.sidebarOpen = false;
-                this.getCountryByIso(data.feature.id);
-                this.fetchNationData(data.feature.id);
-            }
+            this.gotoCountry(data.feature.id);
+            // if (!this.countryExistsInData(data.feature.id)) return false;
+            // if (this.compare) {
+            //     this.addCompareCountry(data.feature.id, true)
+            //     this.showComparison();
+            // } else {
+            //     $state.go('app.export.detail.chapter.indicator.country', {
+            //         indicator: this.ExportService.indicator.indicator_id,
+            //         indiname: this.ExportService.indicator.name,
+            //         iso: data.feature.id
+            //     });
+            //     //$rootScope.sidebarOpen = false;
+            //     this.getCountryByIso(data.feature.id);
+            //     this.fetchNationData(data.feature.id);
+            // }
         });
     }
 
     $onInit() {
         this.loadStateData();
 
-        this.$scope.$watch('vm.selectedIndicator',
-            (n, o) => {
-                if (n === o || angular.isUndefined(n.id)) return false;
-                if (angular.isDefined(o)) {
-                    if (n.id == o.id) return false;
-                }
-                this.gotoIndicator();
-            }
-        );
+        // this.$scope.$watch('vm.selectedIndicator',
+        //     (n, o) => {
+        //         if (n === o || angular.isUndefined(n.id)) return false;
+        //         if (angular.isDefined(o)) {
+        //             if (n.id == o.id) return false;
+        //         }
+        //         this.gotoIndicator();
+        //     }
+        // );
     }
+    gotoCountry(iso){
+      if (!this.countryExistsInData(iso)) return false;
+      if (this.compare) {
+          this.addCompareCountry(iso, true)
+          this.showComparison();
+      } else {
+          this.$state.go('app.export.detail.chapter.indicator.country', {
+              indicator: this.ExportService.indicator.indicator_id,
+              indiname: this.ExportService.indicator.name,
+              iso: iso
+          });
+          this.getCountryByIso(iso);
+          this.fetchNationData(iso);
+      }
+    }
+
     countryExistsInData(iso) {
         var found = false;
         angular.forEach(this.data, (item) => {
@@ -75,6 +91,8 @@ class ChapterContentController {
     }
 
     renderIndicator(item, callback) {
+       this.MapService.resetMap();
+       this.$rootScope.isLoading = true;
         this.IndicatorService.fetchIndicatorWithData(item.indicator_id,
             (indicator) => {
                 this.data = indicator.data;
@@ -90,11 +108,7 @@ class ChapterContentController {
                     fontSize: 12
                 };
                 this.compareOptions = {field: 'score', height: 25, margin:5, color:this.ExportService.indicator.style.base_color, duration:500, min:this.structure.min, max:this.structure.max}
-
-                if (typeof item.style.color_range == "string") {
-                    item.style.color_range = JSON.parse(item.style.color_range);
-                }
-
+                item.style.color_range = this.MapService.parseColorRange(item.style.color_range);
                 this.MapService.setBaseLayer(item.style.basemap);
                 this.MapService.setMapDefaults(item.style);
                 this.MapService.setData(indicator.data, indicator, item.style.color_range ||  item.style.base_color, true);
@@ -102,6 +116,7 @@ class ChapterContentController {
                 if (angular.isFunction(callback)) {
                     callback();
                 }
+                this.$rootScope.isLoading = false;
             }, {
                 data: true
             }
