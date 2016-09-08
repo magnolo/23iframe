@@ -1,4 +1,4 @@
-export function RoutesRun($log, $rootScope, $state) {
+export function RoutesRun($log, $rootScope, $state, $timeout, MapService) {
     'ngInject';
 
     $rootScope.isLoading = true;
@@ -13,14 +13,16 @@ export function RoutesRun($log, $rootScope, $state) {
             else {
                 $rootScope.fullscreenView = false;
             }
-
-
     });
     $rootScope.$on("$stateChangeSuccess",(event, toState)  => {
-
         $rootScope.isLoading = false;
-
-
+        resetMapSize();
     });
-    $rootScope.$on('$destroy', deregisterationCallback)
+    $rootScope.$on('$destroy', deregisterationCallback);
+
+    var resetMapSize = () => {
+      $timeout(() => {
+        MapService.getMap().invalidateSize();
+      }, 500);
+    }
 }

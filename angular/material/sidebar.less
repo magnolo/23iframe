@@ -1,6 +1,6 @@
 md-sidenav {
     &#sidebar {
-        position: absolute !important;
+        position: absolute;
         top:48px;
         left: 0em;
         bottom: auto;
@@ -10,6 +10,15 @@ md-sidenav {
             width: 370px;
             min-width: 370px;
             max-width: 370px;
+        }
+        @media screen and (max-width: 959px){
+          display: inline-block;
+          position: static;
+          bottom:0px;
+          top:auto;
+          width:100%;
+          min-width: 100%;
+          transform: translate3d(0,0,0);
         }
     }
 }

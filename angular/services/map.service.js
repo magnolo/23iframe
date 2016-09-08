@@ -143,6 +143,35 @@ export class MapService{
                     break;
             }
             return style;
+        };
+        this.invertedStyle = (feature) =>{
+            var style = {};
+            var iso = feature.properties[this.iso_field];
+            var nation = this.getNationByIso(iso);
+            // var field = this.map.structure.name || 'score';
+            var field = 'score';
+
+            var linearScale = d3.scale.linear().domain([this.map.structure.min, this.map.structure.max]).range([0, 256]);
+            var colorPos = parseInt(linearScale(parseFloat(nation[field]))) * 4; //;
+            var color = 'rgba(' + this.palette[colorPos] + ', ' + this.palette[colorPos + 1] + ', ' + this.palette[colorPos + 2] + ',' + this.palette[colorPos + 3] + ')';
+
+            style.color = 'rgba(0,0,0,0)';
+            if (angular.isDefined(nation[field]) && nation[field] != null) {
+                style.color = 'rgba(' + this.palette[colorPos] + ', ' + this.palette[colorPos + 1] + ', ' + this.palette[colorPos + 2] + ',0.1)';
+            }
+
+            style.outline = {
+                color: 'rgba(0,0,0,0)',
+                size: 0
+            };
+            style.selected = {
+                color: color,
+                outline: {
+                    color: 'rgba(0,0,0,0.3)',
+                    size: 2
+                }
+            };
+            return style;
         }
     }
 
@@ -429,7 +458,7 @@ export class MapService{
     }
 
     paintCountries(style, click) {
-        this.data.layer.setOpacity(0);
+      //  this.data.layer.setOpacity(0);
         this.$timeout(
             () => {
                 if (angular.isDefined(style) && style != null) {
@@ -442,7 +471,7 @@ export class MapService{
                     this.data.layer.options.onClick = click;
                 }
                 this.data.layer.redraw();
-                this.data.layer.setOpacity(1);
+              //  this.data.layer.setOpacity(0.2);
             }
         );
     }
@@ -545,34 +574,6 @@ export class MapService{
         );
     }
 
-    invertedStyle(feature) {
-        var style = {};
-        var iso = feature.properties[this.iso_field];
-        var nation = this.getNationByIso(iso);
-        // var field = this.map.structure.name || 'score';
-        var field = 'score';
 
-        var linearScale = d3.scale.linear().domain([this.map.structure.min, this.map.structure.max]).range([0, 256]);
-        var colorPos = parseInt(linearScale(parseFloat(nation[field]))) * 4; //;
-        var color = 'rgba(' + this.palette[colorPos] + ', ' + this.palette[colorPos + 1] + ', ' + this.palette[colorPos + 2] + ',' + this.palette[colorPos + 3] + ')';
-
-        style.color = 'rgba(0,0,0,0)';
-        if (angular.isDefined(nation[field]) && nation[field] != null) {
-            style.color = 'rgba(' + this.palette[colorPos] + ', ' + this.palette[colorPos + 1] + ', ' + this.palette[colorPos + 2] + ',0.1)';
-        }
-
-        style.outline = {
-            color: 'rgba(0,0,0,0)',
-            size: 0
-        };
-        style.selected = {
-            color: color,
-            outline: {
-                color: 'rgba(0,0,0,0.3)',
-                size: 2
-            }
-        };
-        return style;
-    }
 
 }

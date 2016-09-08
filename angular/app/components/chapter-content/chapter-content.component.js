@@ -262,10 +262,10 @@ class ChapterContentController {
         this.DialogService.fromTemplate('export', this.$scope);
     }
     showComparison() {
-        $state.go('app.export.detail.chapter.indicator.country.compare', {
+        this.$state.go('app.export.detail.chapter.indicator.country.compare', {
             countries: this.compareList.join('-vs-')
         });
-        this.MapService.gotoCountries($state.params.iso, this.compareList);
+        this.MapService.gotoCountries(this.$state.params.iso, this.compareList);
     }
 
     loadStateData() {

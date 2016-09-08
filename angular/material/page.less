@@ -19,8 +19,8 @@ html {
 }
 body {
   padding-bottom: 0 !important;
-  font-family: 'Gorgia';
-  font-size: 16px;
+  //font-family: 'Gorgia';
+  //font-size: 16px;
   color: @main-color;
   overflow-x: hidden;
   background: url("/images/geometry.png");
@@ -221,268 +221,259 @@ p {
     height: 100%;
   }
 }
-&.loose {
-  .Header {
-    background: #fff !important;
-  }
-  .Page {
-    margin-left: calc(~'370px + 2em');
-    margin-top: 1em;
-    margin-right: 1em;
-    transition: margin-left 0.25s ease-in-out;
-    transition-delay: 0s;
-    width: auto;
-    position: absolute;
-    max-height: calc(~'100% - 2em');
-    max-width: calc(~'100% - 370px - 3em');
-    z-index: 2;
-    section {
-      &.table {
-        height: calc(~'100% - 2em');
-      }
-    }
-  }
-  #sidebar {
-    position: absolute !important;
-    top: 1em;
-    left: 1em;
-    bottom: auto;
-    max-height: calc(~'100% - 2em');
-    overflow-x: hidden;
-  }
-  &.sidebar-closed {
-    .Page {
-      //margin-left: 1em;
-      transition-delay: 0.1s;
-    }
-  }
-  #map {
-    left: 0;
-    width: 100%;
-  }
-  &.rowed {
-    .Page {
-      width: 400px;
-    }
-  }
-  .additional {
-    top: 1em;
-    height: calc(~'100% - 2em');
-    left: calc(~'800px + 1em');
-  }
-  &.loggedIn {
-    #sidebar {
-      left: calc(~'48px + 1em');
-    }
-  }
-  &.fixed {
-    .md-sidenav-backdrop {
-      display: none;
-    }
-    @media screen and (max-width: 959px) {
-      .Header {
-        min-height: 0;
-        height: 0;
-        overflow: hidden;
-        transition: all 0.2s ease;
-      }
-    }
-    #sidebar {
-      top: 0;
-      left: 0;
-      bottom: auto;
-      max-height: 100%;
-      overflow-x: hidden;
-      @media screen and (max-width: 959px) {
-        top: 0;
-        height: 36px;
-        transform: translate3d(0, 0, 0);
-        overflow-y: visible;
-        overflow-x: visible;
-        md-content[ui-view='sidebar'] {
-          background: transparent;
-          overflow: visible;
-          height: 0;
-          > .selector {
-            //                     height: 0;
-            // overflow: visible;
-            // min-height: 0;
-            md-input-container {
-              margin: 0;
-            }
-          }
-        }
-        .mobile-container {
-          transition: all 0.3s ease-in-out;
-          transform: translateY(calc(~"100vh - 320px + 53px"));
-          background: #fff;
-          .comparison {
-            min-height: 200px;
-            max-height: calc(~'100vh - 330px');
-            overflow-y: auto;
-          }
-          .country-chooser {
-            padding: 0 8px;
-          }
-        }
-      }
-    }
-    &:not(.iframed) {
-      @media only screen and (max-device-width: 667px) and (-webkit-device-pixel-ratio: 2) {
-        .mobile-container {
-          transform: translateY(calc(~"100vh - 395px + 53px"));
-        }
-      }
-      // ihpone 6
-      @media screen and (min-device-width : 414px) and (-webkit-device-pixel-ratio: 3) {
-        .mobile-container {
-          transform: translateY(calc(~"100vh - 395px + 53px"));
-        }
-      }
-    }
-    &.loggedIn {
-      #sidebar {
-        left: 48px;
-        @media screen and (max-width: 959px) {
-          left: 0;
-        }
-      }
-    }
-    .mobile-window-switcher {
-      bottom: 16em;
-      display: none;
-    }
-    #map {
-      .leaflet-control-home {
-        position: fixed;
-        top: 58px;
-        left: 380px;
-
-      }
-      .leaflet-toggle-label{
-        display:none;
-      }
-      @media screen and (max-width: 959px) {
-        top: 36px;
-        height: calc(~'100% - 267px');
-        transition: all 0.2s ease;
-        .leaflet-top.leaflet-left {
-          display: none;
-        }
-        .legend {
-          display: none;
-        }
-        .leaflet-control-zoom,
-        .leaflet-toggle-label {
-          display: none;
-        }
-        .leaflet-control-home {
-          position: fixed;
-          top: auto;
-          left: 10px;
-          bottom: 235px;
-          z-index: 4;
-          display: block;
-          border-radius: 50%;
-          transition: all .3s ease;
-          a {
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            line-height: 48px;
-            md-icon {
-              font-size: 32px;
-              width: 32px;
-              height: 32px;
-              line-height: 28px;
-            }
-          }
-        }
-      }
-    }
-    &.sidebar-closed {
-      @media screen and (max-width: 959px) {
-        .Header {
-          min-height: 48px;
-          height: 48px;
-          overflow: auto;
-        }
-      }
-      #map {
-        @media screen and (max-width: 959px) {
-          height: calc(~'100% - 167px');
-          .legend {
-            display: block;
-          }
-          .leaflet-control-home {
-            bottom:135px
-          }
-        }
-      }
-      #sidebar {
-        @media only screen and (max-width: 959px) {
-          top: 0;
-          height: 36px;
-          transform: translate3d(0, 0, 0);
-          overflow-y: visible;
-          overflow-x: visible;
-          md-content[ui-view='sidebar'] {
-            height: 36px;
-            > .selector {
-              // transition: all .2s ease;
-              // height: 36px;
-              // overflow: hidden;
-              // min-height: 36px;
-              md-input-container {
-                margin: 0;
-              }
-            }
-          }
-          .mobile-container {
-            transform: translateY(calc(~"100vh - 215px"));
-            min-height: 115px;
-          }
-        }
-      }
-      &:not(.iframed) {
-        #sidebar {
-          // ihpone 5
-          @media only screen and (max-device-width: 667px) and (-webkit-device-pixel-ratio: 2) {
-            .mobile-container {
-              transform: translateY(calc(~"100vh - 285px"));
-            }
-          }
-          // ihpone 6
-          @media screen and (min-device-width : 414px) and (-webkit-device-pixel-ratio: 3) {
-            .mobile-container {
-              transform: translateY(calc(~"100vh - 285px"));
-            }
-          }
-        }
-      }
-      .mobile-window-switcher {
-        bottom: 9.5em;
-      }
-      .mobile-container {
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-      }
-    }
-  }
-}
+// &.loose {
+//   .Header {
+//     background: #fff !important;
+//   }
+//   .Page {
+//     margin-left: calc(~'370px + 2em');
+//     margin-top: 1em;
+//     margin-right: 1em;
+//     transition: margin-left 0.25s ease-in-out;
+//     transition-delay: 0s;
+//     width: auto;
+//     position: absolute;
+//     max-height: calc(~'100% - 2em');
+//     max-width: calc(~'100% - 370px - 3em');
+//     z-index: 2;
+//     section {
+//       &.table {
+//         height: calc(~'100% - 2em');
+//       }
+//     }
+//   }
+//   #sidebar {
+//     position: absolute !important;
+//     top: 1em;
+//     left: 1em;
+//     bottom: auto;
+//     max-height: calc(~'100% - 2em');
+//     overflow-x: hidden;
+//   }
+//   &.sidebar-closed {
+//     .Page {
+//       //margin-left: 1em;
+//       transition-delay: 0.1s;
+//     }
+//   }
+//   #map {
+//     left: 0;
+//     width: 100%;
+//   }
+//   &.rowed {
+//     .Page {
+//       width: 400px;
+//     }
+//   }
+//   .additional {
+//     top: 1em;
+//     height: calc(~'100% - 2em');
+//     left: calc(~'800px + 1em');
+//   }
+//   &.loggedIn {
+//     #sidebar {
+//       left: calc(~'48px + 1em');
+//     }
+//   }
+//   &.fixed {
+//     .md-sidenav-backdrop {
+//       display: none;
+//     }
+//     @media screen and (max-width: 959px) {
+//       .Header {
+//         min-height: 0;
+//         height: 0;
+//         overflow: hidden;
+//         transition: all 0.2s ease;
+//       }
+//     }
+//     #sidebar {
+//       top: 0;
+//       left: 0;
+//       bottom: auto;
+//       max-height: 100%;
+//       overflow-x: hidden;
+//       @media screen and (max-width: 959px) {
+//         top: 0;
+//         height: 36px;
+//         transform: translate3d(0, 0, 0);
+//         overflow-y: visible;
+//         overflow-x: visible;
+//         md-content[ui-view='sidebar'] {
+//           background: transparent;
+//           overflow: visible;
+//           height: 0;
+//           > .selector {
+//             //                     height: 0;
+//             // overflow: visible;
+//             // min-height: 0;
+//             md-input-container {
+//               margin: 0;
+//             }
+//           }
+//         }
+//         .mobile-container {
+//           transition: all 0.3s ease-in-out;
+//           transform: translateY(calc(~"100vh - 320px + 53px"));
+//           background: #fff;
+//           .comparison {
+//             min-height: 200px;
+//             max-height: calc(~'100vh - 330px');
+//             overflow-y: auto;
+//           }
+//           .country-chooser {
+//             padding: 0 8px;
+//           }
+//         }
+//       }
+//     }
+//     &:not(.iframed) {
+//       @media only screen and (max-device-width: 667px) and (-webkit-device-pixel-ratio: 2) {
+//         .mobile-container {
+//           transform: translateY(calc(~"100vh - 395px + 53px"));
+//         }
+//       }
+//       // ihpone 6
+//       @media screen and (min-device-width : 414px) and (-webkit-device-pixel-ratio: 3) {
+//         .mobile-container {
+//           transform: translateY(calc(~"100vh - 395px + 53px"));
+//         }
+//       }
+//     }
+//     &.loggedIn {
+//       #sidebar {
+//         left: 48px;
+//         @media screen and (max-width: 959px) {
+//           left: 0;
+//         }
+//       }
+//     }
+//     .mobile-window-switcher {
+//       bottom: 16em;
+//       display: none;
+//     }
+//     #map {
+//       .leaflet-control-home {
+//         position: fixed;
+//         top: 58px;
+//         left: 380px;
+//
+//       }
+//       .leaflet-toggle-label{
+//         display:none;
+//       }
+//       @media screen and (max-width: 959px) {
+//         top: 36px;
+//         height: calc(~'100% - 267px');
+//         transition: all 0.2s ease;
+//         .leaflet-top.leaflet-left {
+//           display: none;
+//         }
+//         .legend {
+//           display: none;
+//         }
+//         .leaflet-control-zoom,
+//         .leaflet-toggle-label {
+//           display: none;
+//         }
+//         .leaflet-control-home {
+//           position: fixed;
+//           top: auto;
+//           left: 10px;
+//           bottom: 235px;
+//           z-index: 4;
+//           display: block;
+//           border-radius: 50%;
+//           transition: all .3s ease;
+//           a {
+//             border-radius: 50%;
+//             width: 48px;
+//             height: 48px;
+//             line-height: 48px;
+//             md-icon {
+//               font-size: 32px;
+//               width: 32px;
+//               height: 32px;
+//               line-height: 28px;
+//             }
+//           }
+//         }
+//       }
+//     }
+//     &.sidebar-closed {
+//       @media screen and (max-width: 959px) {
+//         .Header {
+//           min-height: 48px;
+//           height: 48px;
+//           overflow: auto;
+//         }
+//       }
+//       #map {
+//         @media screen and (max-width: 959px) {
+//           height: calc(~'100% - 167px');
+//           .legend {
+//             display: block;
+//           }
+//           .leaflet-control-home {
+//             bottom:135px
+//           }
+//         }
+//       }
+//       #sidebar {
+//         @media only screen and (max-width: 959px) {
+//           top: 0;
+//           height: 36px;
+//           transform: translate3d(0, 0, 0);
+//           overflow-y: visible;
+//           overflow-x: visible;
+//           md-content[ui-view='sidebar'] {
+//             height: 36px;
+//             > .selector {
+//               // transition: all .2s ease;
+//               // height: 36px;
+//               // overflow: hidden;
+//               // min-height: 36px;
+//               md-input-container {
+//                 margin: 0;
+//               }
+//             }
+//           }
+//           .mobile-container {
+//             transform: translateY(calc(~"100vh - 215px"));
+//             min-height: 115px;
+//           }
+//         }
+//       }
+//       &:not(.iframed) {
+//         #sidebar {
+//           // ihpone 5
+//           @media only screen and (max-device-width: 667px) and (-webkit-device-pixel-ratio: 2) {
+//             .mobile-container {
+//               transform: translateY(calc(~"100vh - 285px"));
+//             }
+//           }
+//           // ihpone 6
+//           @media screen and (min-device-width : 414px) and (-webkit-device-pixel-ratio: 3) {
+//             .mobile-container {
+//               transform: translateY(calc(~"100vh - 285px"));
+//             }
+//           }
+//         }
+//       }
+//       .mobile-window-switcher {
+//         bottom: 9.5em;
+//       }
+//       .mobile-container {
+//         transition: all 0.3s ease-in-out;
+//         box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+//       }
+//     }
+//   }
+// }
 .mobile-container {
   padding-bottom: 1em;
 }
-&.loggedIn {
-  /*  #sidebar {
-      @media screen and (max-width: 600px) {
-          left: 48px;
-          max-width: calc(~'100% - 48px');
-          min-width: calc(~'100% - 48px');
-          width: calc(~'100% - 48px');
-      }
-  }*/
-}
+
 .additional {
   position: relative;
   z-index: 1;

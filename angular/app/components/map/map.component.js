@@ -92,7 +92,7 @@ class MapController{
                     },{
                         reload:true
                     });
-                    this.$rootScope.sidebarOpen = false;
+                    // this.$rootScope.sidebarOpen = false;
                 }
             });
             return container;

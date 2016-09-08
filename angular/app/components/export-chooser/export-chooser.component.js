@@ -14,6 +14,7 @@ class ExportChooserController{
         this.$timeout(
             () => {
                 if (this.chapters) {
+                  if(angular.isDefined(this.selected)){
                     if (this.selected.parent_id)
                         angular.forEach(this.chapters,
                             (chapter) => {
@@ -21,9 +22,12 @@ class ExportChooserController{
                                     this.activeList = chapter.children;
                             }
                         );
-                    else
+                    else{
                         this.activeList = this.chapters;
+                    }
                     this.index = this.activeList.indexOf(this.selected);
+                  }
+
                 }
             }
         );

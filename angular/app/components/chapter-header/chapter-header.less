@@ -5,6 +5,10 @@
 	max-height:48px;
 	background-color: #fff !important;
   border-bottom:1px solid @grey-light;
+	@media screen and (max-width:959px){
+		min-height:84px;
+		max-height:84px;
+	}
 	//box-shadow: 0px 0px 5px @base;
 	.md-toolbar-tools, md-toolbar{
 		height:48px;
@@ -36,6 +40,11 @@
 	}
 	.logo{
 		font-size:3em;
+	}
+	.md-subheader.selector .md-subheader-inner md-input-container{
+		@media screen and(max-width: 959px){
+			margin-top:0px;
+		}
 	}
 }
 md-toolbar{
