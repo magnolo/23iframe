@@ -1,3 +1,4 @@
+import {ChapterDataComponent} from './app/components/chapter-data/chapter-data.component';
 import {ChapterHeaderComponent} from './app/components/chapter-header/chapter-header.component';
 import {ExportChooserComponent} from './app/components/export-chooser/export-chooser.component';
 import {ChapterContentComponent} from './app/components/chapter-content/chapter-content.component';
@@ -9,6 +10,7 @@ import {DetailsImageComponent} from './app/components/details-image/details-imag
 
 
 angular.module('app.components')
+	.component('chapterData', ChapterDataComponent)
 	.component('chapterHeader', ChapterHeaderComponent)
 	.component('exportChooser', ExportChooserComponent)
 	.component('chapterContent', ChapterContentComponent)

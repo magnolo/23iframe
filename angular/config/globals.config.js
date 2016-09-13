@@ -1,4 +1,5 @@
-export function GlobalsConfig(){
+export function GlobalsConfig($mdGestureProvider){
     'ngInject';
     //
+    $mdGestureProvider.skipClickHijack();
 }

@@ -1,11 +1,12 @@
 class ChapterHeaderController{
-    constructor($rootScope, $scope, $state, DialogService, ExportService){
+    constructor($rootScope, $scope, $state, $mdSidenav, DialogService, ExportService){
         'ngInject';
 
         //
         this.ExportService = ExportService;
         this.DialogService = DialogService;
         this.$state = $state;
+        this.$mdSidenav = $mdSidenav;
     }
 
     $onInit(){
@@ -31,7 +32,8 @@ class ChapterHeaderController{
 			});
     }
     showData(){
-
+      this.$mdSidenav('right')
+                .toggle();
     }
 }
 

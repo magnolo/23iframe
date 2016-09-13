@@ -26,6 +26,7 @@
       <div class="main-view" ui-view="main" flex></div>
       <md-sidenav md-whiteframe="1" id="sidebar" ui-view="sidebar" md-is-locked-open="$mdMedia('gt-sm')"></md-sidenav>
     </div>
+    <md-sidenav ui-view="sidebar-right" md-disable-backdrop="true" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right"></md-sidenav>
     <div id="fullscreen-view" ui-view="fullscreen" class="doAnim-fade-long" layout-fill ng-if="$root.fullscreenView" flex layout="row" layout-align="center center"></div>
 
     <!--div class="mobile-window-switcher" hide-gt-sm>

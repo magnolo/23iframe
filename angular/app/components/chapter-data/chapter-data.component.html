@@ -1,0 +1,23 @@
+<md-toolbar>
+    <div layout="row" layout-align="space-between center">
+        <h1 class="md-toolbar-tools">{{ vm.ExportService.indicator.title }}</h1>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.closeRightbar()">
+            <md-icon>close</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content>
+    <md-list ng-cloak>
+        <md-list-item ng-repeat="data in vm.ExportService.data.data" ng-click="null">
+            <img alt="{{data.country}}" ng-src="http://www.geognos.com/api/en/countries/flag/{{data.iso}}.png" class="md-avatar"/>
+            <p>
+                {{ data.country }}
+            </p>
+            <div class="list-score">{{data.score}}</div>
+        </md-list-item>
+    </md-list>
+    <md-button ng-click="vm.closeRightbar()" class="md-primary">
+        Close
+    </md-button>
+</md-content>

@@ -263,31 +263,6 @@ export function CompareCountriesDirective() {
             }, function(n, o) {
                 scope.countries = angular.extend(scope.countries, scope.country);
                 updateData();
-                // $timeout(function() {
-                //     var container = angular.element(document).find('md-sidenav').find('section');
-                //     var map = angular.element(document.getElementById("map"));
-                //
-                //     if (scope.countries.length && window.innerWidth < 960) {
-                //         var h = container[0].clientHeight;
-                //         var os = getMobileOperatingSystem();
-                //         var extra = 0,
-                //             scroll = 0,
-                //             extraMore = 0;
-                //         if (os == "iOS") {
-                //             extra = 5;
-                //             extraMore = 35;
-                //             scroll = 100;
-                //         }
-                //         if (h < window.innerHeight - 194) {
-                //             container.attr('style', 'transform:translateY(calc(100vh - ' + (parseInt(scope.countries.length * 24)) + 'px - 260px - ' + (extra * scope.countries.length) + 'px - ' + extraMore + 'px))')
-                //         } else {
-                //             container.attr('style', 'transform:translateY(calc(100vh - ' + (parseInt(window.innerHeight - 200)) + 'px - 40px - ' + scroll + 'px))')
-                //         }
-                //     } else {
-                //         container.attr('style', '');
-                //
-                //     }
-                // })
             }, true)
         }
     }

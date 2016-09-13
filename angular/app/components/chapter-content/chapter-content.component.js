@@ -64,20 +64,20 @@ class ChapterContentController {
         //     }
         // );
     }
-    gotoCountry(iso){
-      if (!this.countryExistsInData(iso)) return false;
-      if (this.compare) {
-          this.addCompareCountry(iso, true)
-          this.showComparison();
-      } else {
-          this.$state.go('app.export.detail.chapter.indicator.country', {
-              indicator: this.ExportService.indicator.indicator_id,
-              indiname: this.ExportService.indicator.name,
-              iso: iso
-          });
-          this.getCountryByIso(iso);
-          this.fetchNationData(iso);
-      }
+    gotoCountry(iso) {
+        if (!this.countryExistsInData(iso)) return false;
+        if (this.compare) {
+            this.addCompareCountry(iso, true)
+            this.showComparison();
+        } else {
+            this.$state.go('app.export.detail.chapter.indicator.country', {
+                indicator: this.ExportService.indicator.indicator_id,
+                indiname: this.ExportService.indicator.name,
+                iso: iso
+            });
+            this.getCountryByIso(iso);
+            this.fetchNationData(iso);
+        }
     }
 
     countryExistsInData(iso) {
@@ -91,8 +91,8 @@ class ChapterContentController {
     }
 
     renderIndicator(item, callback) {
-       this.MapService.resetMap();
-       this.$rootScope.isLoading = true;
+        this.MapService.resetMap();
+        this.$rootScope.isLoading = true;
         this.IndicatorService.fetchIndicatorWithData(item.indicator_id,
             (indicator) => {
                 this.data = indicator.data;
@@ -107,7 +107,15 @@ class ChapterContentController {
                     height: 60,
                     fontSize: 12
                 };
-                this.compareOptions = {field: 'score', height: 25, margin:5, color:this.ExportService.indicator.style.base_color, duration:500, min:this.structure.min, max:this.structure.max}
+                this.compareOptions = {
+                    field: 'score',
+                    height: 25,
+                    margin: 5,
+                    color: this.ExportService.indicator.style.base_color,
+                    duration: 500,
+                    min: this.structure.min,
+                    max: this.structure.max
+                }
                 item.style.color_range = this.MapService.parseColorRange(item.style.color_range);
                 this.MapService.setBaseLayer(item.style.basemap);
                 this.MapService.setMapDefaults(item.style);
@@ -216,25 +224,25 @@ class ChapterContentController {
         }
     }
     setCompare(activate) {
-			if (activate) {
-				this.compare = true;
-				this.countriesList[0] = this.selectedCountry;
-				this.MapService.invertStyle();
-				this.$state.go('app.export.detail.chapter.indicator.country.compare', {
-					countries: this.compareList.join('-vs-')
-				});
-			} else {
-				this.compare = false;
-				this.MapService.localStyle();
-				this.$state.go('app.export.detail.chapter.indicator.country');
-				this.MapService.setSelectedFeature(this.$state.params.iso, true);
+        if (activate) {
+            this.compare = true;
+            this.countriesList[0] = this.selectedCountry;
+            this.MapService.invertStyle();
+            this.$state.go('app.export.detail.chapter.indicator.country.compare', {
+                countries: this.compareList.join('-vs-')
+            });
+        } else {
+            this.compare = false;
+            this.MapService.localStyle();
+            this.$state.go('app.export.detail.chapter.indicator.country');
+            this.MapService.setSelectedFeature(this.$state.params.iso, true);
 
-				//muss nicht sein
-				this.compareList = [];
-				this.countriesList = [];
-			}
+            //muss nicht sein
+            this.compareList = [];
+            this.countriesList = [];
+        }
 
-		}
+    }
     addCompareCountry(iso, withRemove) {
         if (iso == this.selectedCountry.iso)
             return false;
@@ -246,16 +254,18 @@ class ChapterContentController {
                     cl = nat;
             }
         );
-        if (idx == -1)
+        if (idx == -1) {
             if (cl) {
                 this.countriesList.push(cl);
                 this.compareList.push(cl.iso);
                 this.MapService.setSelectedFeature(cl.iso, true);
-            } else if (withRemove) {
+            }
+        } else if (withRemove) {
             this.compareList.splice(idx, 1);
             this.countriesList.splice(this.countriesList.indexOf(cl), 1);
             this.MapService.setSelectedFeature(iso, false);
         }
+
     }
 
     showInfo() {
@@ -280,12 +290,13 @@ class ChapterContentController {
                             this.fetchNationData(this.$state.params.iso);
 
                             if (this.$state.params.countries) {
+            
                                 var countries = this.$state.params.countries.split('-vs-');
                                 angular.forEach(countries, (country) => {
                                     this.addCompareCountry(country);
                                 });
                                 this.activeTab = 2;
-                                this.MapService.gotoCountries(this.$state.params.iso, this.compareList);
+                                this.showComparison();
                             }
                         } else {
                             this.selectedCountry = {};
@@ -293,9 +304,6 @@ class ChapterContentController {
                         if (angular.isDefined(this.ExportService.chapter)) {
                             if (this.ExportService.chapter.description) {
                                 this.showInfo();
-
-                                this.$log.log("########################");
-                                this.$log.log(this.ExportService.exporter);
                             }
                         }
                     }

@@ -62,7 +62,10 @@ export function RoutesConfig($stateProvider, $urlRouterProvider) {
                 },
                 'sidebar@': {
                     templateUrl: getView('chapterContent')
-                }
+                },
+								'sidebar-right@':{
+									templateUrl:getView('data')
+								}
 
             }
         })
@@ -73,6 +76,6 @@ export function RoutesConfig($stateProvider, $urlRouterProvider) {
             url:'/:iso'
         })
         .state('app.export.detail.chapter.indicator.country.compare', {
-            url:'/:compare/:countries'
+            url:'/compare/:countries'
         });
 }
