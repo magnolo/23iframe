@@ -33,6 +33,7 @@ export class MapService{
         };
         //Configuration fuer den Datenzugriff allgemein
         this.data = {
+            tileUrl: 'https://www.23degree.org:3001/services/postgis/tt_countries/geom/vector-tiles/{z}/{x}/{y}.pbf?fields=id,admin,adm0_a3,wb_a3,su_a3,iso_a3,iso_a2,name,name_long',
             layer: '',
             //Tabellenname in der die Laendershapes liegen
             name: 'tt_countries',
@@ -53,7 +54,7 @@ export class MapService{
             //Name des Feldes mit dem abgeglichen wird
             field: 'score'
         };
-        // <DEPRECEATED>
+        // <DEPRECEATED>??
         this.map = {
             data: [],
             current: [],
@@ -61,9 +62,38 @@ export class MapService{
             style: [],
             attribution:''
         };
-        // Object - Hier wird der Vektorlayer abgespeichert
+        // Object - Hier wird die LeafletMap abgespeichert
         this.mapLayer = null;
-        //Leaflet Configuration für Layers
+        // Object - Hier wird der Vektorlayer abgespeichert
+        this.vectorLayer = new L.TileLayer.MVTSource({
+            url: this.data.tileUrl,
+            debug: false,
+            detectRetina:true,
+            clickableLayers: [this.getName() + '_geom'],
+            mutexToggle: true,
+            getIDForLayerFeature: (feature) =>  {
+                return feature.properties.iso_a2;
+            },
+            filter: (feature, context) => {
+                return true;
+            },
+            style: (feature) => {
+                var style = {};
+                style.color = 'rgba(0,0,0,0)';
+                style.outline = {
+                    color: 'rgba(0,0,0,0)',
+                    size: 0
+                };
+                return style;
+            }
+        });
+        this.labelsLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v4/magnolo.06029a9c/{z}/{x}/{y}.png?access_token=' + this.keys.mapbox, {
+            noWrap: true,
+            continuousWorld: false,
+            name: 'labels',
+            detectRetina: true
+        });
+        //Leaflet Configuration für automatisierte TileLayers
         this.layers = {
             baselayers: {
                 xyz: this.basemap
@@ -100,8 +130,15 @@ export class MapService{
         //Leafet Config: Lengende in der Map
         this.legend = {};
 
-        var vm = this;
+        //Define Custom Leaflet Controls
+        this.customControls = {
+          'labels':L.control(),
+          'noLabels': true,
+          'backHome': L.control(),
+          backHomeClick: () => {}
+        }
 
+        var vm = this;
         this.countriesStyle = (feature) => {
             var style = {};
             var iso = feature.properties[vm.iso_field];
@@ -174,7 +211,81 @@ export class MapService{
             return style;
         }
     }
+    initVectorLayer(){
+        this.mapLayer.addLayer(this.setLayer(this.vectorLayer));
+    }
 
+    //Initialize the Control for toggling the Labels Layer
+    initLabelsControl(add){
+      this.customControls.labels.setPosition('bottomright');
+      this.customControls.labels.initialize = ()  => {
+          L.Util.setOptions(this, options);
+      }
+      this.customControls.labels.onAdd = () => {
+          var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control-zoom leaflet-toggle-label');
+          var span = L.DomUtil.create('a', 'leaflet-control-zoom-in cursor', container);
+          span.textContent = 'T';
+          span.title = "Toggle Labels";
+          L.DomEvent.disableClickPropagation(container);
+          L.DomEvent.addListener(container, 'click', () => {
+              var map = this.mapLayer();
+              if (this.customControls.noLabels) {
+                  this.mapLayer.removeLayer(this.labelsLayer);
+                  that.customControls.noLabel = false;
+              } else {
+                  mapLayer.addLayer(this.labelsLayer);
+                  this.labelsLayer.bringToFront();
+                  this.customControls.noLabel = true;
+              }
+          });
+          return container;
+      }
+      if(add)
+        this.showLabelsControl(add);
+    }
+
+    initBackHomeControl(add){
+      this.customControls.backHome.setPosition('bottomleft');
+      this.customControls.backHome.initialize = function() {
+          L.Util.setOptions(this, options);
+      }
+      this.customControls.backHome.onAdd = () => {
+          var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control-zoom leaflet-control-home');
+          var span = L.DomUtil.create('a', 'leaflet-control-zoom-in cursor', container);
+          var icon = L.DomUtil.create('md-icon', 'material-icons md-primary', span);
+          span.title = "Center Map";
+          icon.textContent = "home";
+          L.DomEvent.disableClickPropagation(container);
+          L.DomEvent.addListener(container, 'click', this.customControls.backHomeClick);
+          return container;
+      }
+      if(add)
+        this.showBackHomeControl(add);
+    }
+    setBackHomeClick(clickFn){
+      let container = this.customControls.backHome.getContainer();
+      L.DomEvent.removeListener(container, 'click', this.customControls.backHomeClick);
+      this.customControls.backHomeClick = clickFn
+      L.DomEvent.addListener(container, 'click', this.customControls.backHomeClick);
+    }
+    // Add/Remove the Control for the Labels Layer on the Map
+    showBackHomeControl(show){
+      if(show){
+        this.mapLayer.addControl(this.customControls.backHome);
+      }
+      else {
+        this.mapLayer.removeControl(this.customControls.backHome);
+      }
+    }
+    // Add/Remove the Control for the Labels Layer on the Map
+    showLabelsControl(show){
+      if(show){
+        this.mapLayer.addControl(this.customControls.labels);
+      }
+      else {
+        this.mapLayer.removeControl(this.customControls.labels);
+      }
+    }
     setMap(map) {
         return this.mapLayer = map;
     }
@@ -182,7 +293,12 @@ export class MapService{
     getMap() {
         return this.mapLayer;
     }
-
+    setView(lat, lng, zoom){
+      let lt = lat || this.center.lat;
+      let lg = lng || this.center.lng;
+      let zo = zoom || this.center.zoom;
+      this.mapLayer.setView([lt, lg], zo);
+    }
     setBaseLayer(basemap, dataprovider) {
 
         if (!basemap) {
@@ -205,6 +321,12 @@ export class MapService{
             // }
         }
         this.map.attribution = attribution;
+        this.mapLayer.eachLayer((layer) => {
+            if(layer.name == this.data.name+'_geom'){
+              layer.bringToFront();
+            }
+        });
+
     }
 
     setMapDefaults(style) {

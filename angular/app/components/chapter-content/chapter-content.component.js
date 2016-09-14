@@ -34,24 +34,25 @@ class ChapterContentController {
         //
         this.MapService.countryClick((data) => {
             this.gotoCountry(data.feature.id);
-            // if (!this.countryExistsInData(data.feature.id)) return false;
-            // if (this.compare) {
-            //     this.addCompareCountry(data.feature.id, true)
-            //     this.showComparison();
-            // } else {
-            //     $state.go('app.export.detail.chapter.indicator.country', {
-            //         indicator: this.ExportService.indicator.indicator_id,
-            //         indiname: this.ExportService.indicator.name,
-            //         iso: data.feature.id
-            //     });
-            //     //$rootScope.sidebarOpen = false;
-            //     this.getCountryByIso(data.feature.id);
-            //     this.fetchNationData(data.feature.id);
-            // }
         });
+        $timeout(() => {
+            this.MapService.setBackHomeClick(() => {
+              this.selectedCountry = {};
+              this.current = {};
+              this.countriesList = [];
+              this.compareList = [];
+              this.MapService.resetSelected();
+              this.MapService.setView();
+              this.$state.go('app.export.detail.chapter', {
+                chapter: 1
+              });
+            });
+        });
+
     }
 
     $onInit() {
+
         this.loadStateData();
 
         // this.$scope.$watch('vm.selectedIndicator',
@@ -290,7 +291,7 @@ class ChapterContentController {
                             this.fetchNationData(this.$state.params.iso);
 
                             if (this.$state.params.countries) {
-            
+
                                 var countries = this.$state.params.countries.split('-vs-');
                                 angular.forEach(countries, (country) => {
                                     this.addCompareCountry(country);
