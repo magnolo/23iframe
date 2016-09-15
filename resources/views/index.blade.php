@@ -15,7 +15,7 @@
     <script type="text/javascript">document.location.href = '/unsupported-browser'</script>
     <![endif]-->
 </head>
-<body flow-prevent-drop ng-class="{'iframed': $root.iframed, 'startup': $root.started, 'loggedIn': $root.isAuthenticated(), 'noHeader': $root.noHeader, 'greyed': $root.greyed, 'loose': $root.looseLayout,  'fixed': $root.fixLayout,'sidebar-closed': !$root.sidebarOpen, 'rowed': $root.rowed, 'addFull': $root.addFull}" layout="column">
+<body flow-prevent-drop ng-class="{'iframed': $root.iframed, 'startup': $root.started, 'countrySelected': $root.countrySelected}" layout="column">
 
 
     <!--div ui-view="header"></div-->

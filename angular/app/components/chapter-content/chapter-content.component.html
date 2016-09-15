@@ -13,23 +13,7 @@
     </md-input-container>
   </div>
 </md-subheader> -->
-<md-content layout-padding hide-xs hide-sm ng-if="vm.ExportService.exporter.items.length">
-  <div style="padding: 0 8px">
-    <md-input-container class="md-block no-margin">
-      <md-select ng-model="vm.selectedIndicator" aria-label="Select Indicator" ng-change="vm.gotoIndicator()">
-
-        <md-optgroup ng-if="chapter.type == 'group'" label="{{chapter.title}}" ng-repeat="chapter in vm.ExportService.exporter.items" ng-style="{'color': vm.ExportService.indicator.style.base_color}">
-          <md-option ng-value="item" ng-repeat="item in chapter.children">{{ item.title}}</md-option>
-        </md-optgroup>
-
-        <md-optgroup ng-if="chapter.type != 'group'" label="{{vm.ExportService.exporter.title}}"  ng-style="{'color': vm.ExportService.indicator.style.base_color}">
-          <md-option ng-value="item" ng-if="item.type == 'indicator'" ng-repeat="item in vm.ExportService.exporter.items">{{ item.title}}</md-option>
-        </md-optgroup>
-
-      </md-select>
-    </md-input-container>
-  </div>
-</md-content>
+<export-chooser hide-xs hide-sm></export-chooser>
 
 <div class="chapter-image doAnim-fade" hide-xs hide-sm layout="column" layout-align="center center" ng-if="vm.ExportService.chapter.style.image.src" ng-class="{'dark': !vm.isDark}">
   <div style="background-image:url('{{$root.providerAddress + vm.ExportService.chapter.style.image.src}}')" class="image">
@@ -46,20 +30,18 @@
       <div ng-if="!vm.selectedCountry.iso && !$root.isLoading" layout="row" layout-align="space-between center" flex>
 
         <div class="hint" >Click on the map</div>
-        <export-chooser flex chapters="vm.ExportService.exporter.items" countries="vm.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></export-chooser>
-
-
+        <country-chooser flex chapters="vm.ExportService.exporter.items" countries="vm.ExportService.data.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></country-chooser>
       </div>
-      <export-chooser ng-if="vm.selectedCountry.iso && !$root.isLoading " chapters="vm.ExportService.exporter.items" countries="vm.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></export-chooser>
+      <country-chooser ng-if="vm.selectedCountry.iso && !$root.isLoading " chapters="vm.ExportService.exporter.items" countries="vm.ExportService.data.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></country-chooser>
       <div layout-gt-sm="column" layout="row" layout-align="space-between center" layout-align-gt-sm="start" ng-if="vm.selectedCountry.iso" style="margin:0 18px">
         <div layout="column" layout-gt-sm="row" layout-align-gt-sm="center center" layout-align="start center">
 
           <circlegraph flex-order-gt-sm="2" item="vm.selectedCountry" options="vm.circleOptions"></circlegraph>
           <span flex-order-gt-sm="1" class="colored"><b>Rank</b><span show-sm show-xs>&nbsp;&nbsp;</span></span>
         </div>
-
+        <span class="hor-20" hide-gt-sm></span>
         <section flex class="module slide-toggle" layout-align="center center" layout="column" ng-if="vm.current  && !vm.compare.active">
-          <median flex data="vm.data" ng-model="vm.selectedCountry" options="{ showValue:false, color: vm.ExportService.indicator.style.base_color,gradient:vm.ExportService.indicator.style.color_range,handling: true, field: 'score', max:	vm.structure.max, min:	vm.structure.min, info:true}" style="margin:0.7em 0"></median>
+          <median flex data="vm.ExportService.data.data" ng-model="vm.selectedCountry" options="{ showValue:false, color: vm.ExportService.indicator.style.base_color,gradient:vm.ExportService.indicator.style.color_range,handling: true, field: 'score', max:	vm.ExportService.data.max, min:	vm.ExportService.data.min, info:true}" style="margin:0.7em 0"></median>
           <div class="colored"><b>Score in % {{vm.selectedCountry.score}}</b></div>
         </section>
       </div>
@@ -68,16 +50,16 @@
     </div>
     </md-tab>
     <md-tab label="History" ng-disabled="!vm.selectedCountry.iso || vm.current.length < 2" md-active="vm.activeTab == 1" md-on-select="vm.setTab(1)" ng-disabled="!vm.current">
-      <export-chooser chapters="vm.ExportService.exporter.items" countries="vm.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.selectCountry(nation)"></export-chooser>
+      <country-chooser chapters="vm.ExportService.exporter.items" countries="vm.ExportService.data.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.selectCountry(nation)"></country-chooser>
       <div class="module tabs mb1" layout="column">
         <history chartdata="vm.current" options="{field:'score', color:vm.ExportService.indicator.style.base_color || 'rgba(128, 243, 198,1)'}"></history>
       </div>
     </md-tab>
     <md-tab label="Compare" ng-disabled="!vm.selectedCountry.iso || $root.isLoading" md-active="vm.activeTab == 2" md-on-deselect="vm.setCompare(false)" md-on-select="vm.setCompare(true)" ng-disabled="!vm.selectedCountry.iso">
-      <export-chooser chapters="vm.ExportService.exporter.items" countries="vm.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></export-chooser>
+      <country-chooser chapters="vm.ExportService.exporter.items" countries="vm.ExportService.data.data" nation="vm.selectedCountry" selected="vm.selectedIndicator" changed="vm.gotoCountry(nation.iso)"></country-chooser>
       <div class="module comparison">
         <div flex style="text-align:right;font-style: italic;font-size: 0.8em;margin-right: 20px;opacity: 0.7;margin-bottom: 1em;">{{ vm.selectedIndicator.title }} ({{vm.selectedIndicator.indicator.type.ext}})</div>
-        <div layout-wrap layout="row" ng-if="vm.current && vm.structure">
+        <div layout-wrap layout="row" ng-if="vm.current && vm.ExportService.data">
           <compare-countries flex style="margin-left:8px;" country="vm.selectedCountry" countries="vm.countriesList" options="vm.compareOptions"></compare-countries>
         </div>
       </div>

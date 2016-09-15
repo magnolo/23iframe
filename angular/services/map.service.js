@@ -99,11 +99,17 @@ export class MapService{
                 xyz: this.basemap
             }
         };
+        // Standard Map Center
+        this.homePos = {
+          lat: 48.209206,
+          lng: 16.372778,
+          zoom: 3
+        }
         // Leaflet Config: Center
         this.center = {
-            lat: 48.209206,
-            lng: 16.372778,
-            zoom: 3
+            lat: this.homePos.lat,
+            lng: this.homePos.lng,
+            zoom: this.homePos.zoom
         };
         //Leaflet Config: Grenzen
         this.maxbounds = {
@@ -294,9 +300,9 @@ export class MapService{
         return this.mapLayer;
     }
     setView(lat, lng, zoom){
-      let lt = lat || this.center.lat;
-      let lg = lng || this.center.lng;
-      let zo = zoom || this.center.zoom;
+      let lt = lat || this.homePos.lat;
+      let lg = lng || this.homePos.lng;
+      let zo = zoom || this.homePos.zoom;
       this.mapLayer.setView([lt, lg], zo);
     }
     setBaseLayer(basemap, dataprovider) {

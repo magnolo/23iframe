@@ -1,17 +1,11 @@
 class CoverController{
-    constructor($log, $rootScope, $state, ExportService){
+    constructor(ExportService){
         'ngInject';
         this.ExportService = ExportService;
-        this.$rootScope = $rootScope;
-        this.$state = $state;
-        this.$log = $log;
-        //
     }
 
     $onInit(){
-        this.ExportService.getExport(this.$state.params.id, function(exporter){});
-        this.$rootScope.sidebarOpen = false;
-        this.$log.log(this.$rootScope.isViewer);
+        this.ExportService.getExport(this.$state.params.id);
     }
 }
 

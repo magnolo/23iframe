@@ -37,6 +37,7 @@ class ChapterContentController {
         });
         $timeout(() => {
             this.MapService.setBackHomeClick(() => {
+              this.$rootScope.countrySelected = false;
               this.selectedCountry = {};
               this.current = {};
               this.countriesList = [];
@@ -52,18 +53,7 @@ class ChapterContentController {
     }
 
     $onInit() {
-
         this.loadStateData();
-
-        // this.$scope.$watch('vm.selectedIndicator',
-        //     (n, o) => {
-        //         if (n === o || angular.isUndefined(n.id)) return false;
-        //         if (angular.isDefined(o)) {
-        //             if (n.id == o.id) return false;
-        //         }
-        //         this.gotoIndicator();
-        //     }
-        // );
     }
     gotoCountry(iso) {
         if (!this.countryExistsInData(iso)) return false;
@@ -78,12 +68,13 @@ class ChapterContentController {
             });
             this.getCountryByIso(iso);
             this.fetchNationData(iso);
+
         }
     }
 
     countryExistsInData(iso) {
         var found = false;
-        angular.forEach(this.data, (item) => {
+        angular.forEach(this.ExportService.data.data, (item) => {
             if (item.iso == iso) {
                 found = true;
             }
@@ -96,13 +87,11 @@ class ChapterContentController {
         this.$rootScope.isLoading = true;
         this.IndicatorService.fetchIndicatorWithData(item.indicator_id,
             (indicator) => {
-                this.data = indicator.data;
-                this.structure = indicator;
                 this.ExportService.data = indicator;
                 this.circleOptions = {
                     color: this.ExportService.indicator.style.base_color || '#00ccaa',
                     field: 'rank',
-                    size: this.structure.count,
+                    size: this.ExportService.data.count,
                     hideNumbering: true,
                     width: 60,
                     height: 60,
@@ -114,8 +103,8 @@ class ChapterContentController {
                     margin: 5,
                     color: this.ExportService.indicator.style.base_color,
                     duration: 500,
-                    min: this.structure.min,
-                    max: this.structure.max
+                    min: this.ExportService.data.min,
+                    max: this.ExportService.data.max
                 }
                 item.style.color_range = this.MapService.parseColorRange(item.style.color_range);
                 this.MapService.setBaseLayer(item.style.basemap);
@@ -148,82 +137,22 @@ class ChapterContentController {
             (data) => {
                 this.current = data;
                 this.MapService.setSelectedFeature(iso, true, true);
-                this.$rootScope.sidebarOpen = true;
             }
         );
     }
 
     getCountryByIso(iso) {
-        angular.forEach(this.data,
+        angular.forEach(this.ExportService.data.data,
             (item) => {
                 if (item.iso == iso)
                     this.selectedCountry = item;
             }
         );
+        this.$rootScope.countrySelected = true;
         return iso;
     }
 
-    gotoIndicator() {
-        if (this.ExportService.chapter.type == "indicator") {
-            var idx = 0;
-            angular.forEach(this.ExportService.exporter.items, (item, key) => {
-                if (item.id == this.selectedIndicator.id) {
-                    idx = key;
-                }
-            })
-            if (angular.isDefined(this.selectedCountry.iso)) {
-                this.$state.go('app.export.detail.chapter.indicator.country', {
-                    chapter: idx + 1,
-                    indicator: this.selectedIndicator.indicator_id,
-                    indiname: this.selectedIndicator.name,
-                    iso: this.selectedCountry.iso
-                });
-            } else {
-                this.$state.go('app.export.detail.chapter.indicator', {
-                    chapter: idx + 1,
-                    indicator: this.selectedIndicator.indicator_id,
-                    indiname: this.selectedIndicator.name
-                });
-            }
-        } else {
-            if (this.ExportService.chapter.id != this.selectedIndicator.parent.id) {
-                var idx = 0;
-                angular.forEach(this.ExportService.exporter.items, (item, key) => {
-                    if (item.id == this.selectedIndicator.parent.id) {
-                        idx = key;
-                    }
-                })
-                if (angular.isDefined(this.selectedCountry.iso)) {
-                    this.$state.go('app.export.detail.chapter.indicator.country', {
-                        chapter: idx + 1,
-                        indicator: this.selectedIndicator.indicator_id,
-                        indiname: this.selectedIndicator.name,
-                        iso: this.selectedCountry.iso
-                    });
-                } else {
-                    this.$state.go('app.export.detail.chapter.indicator', {
-                        chapter: idx + 1,
-                        indicator: this.selectedIndicator.indicator_id,
-                        indiname: this.selectedIndicator.name
-                    });
-                }
-            } else {
-                if (angular.isDefined(this.selectedCountry.iso)) {
-                    this.$state.go('app.export.detail.chapter.indicator.country', {
-                        indicator: this.selectedIndicator.indicator_id,
-                        indiname: this.selectedIndicator.name,
-                        iso: this.selectedCountry.iso
-                    });
-                } else {
-                    this.$state.go('app.export.detail.chapter.indicator', {
-                        indicator: this.selectedIndicator.indicator_id,
-                        indiname: this.selectedIndicator.name
-                    });
-                }
-                this.loadStateData();
-            }
-        }
-    }
+
     setCompare(activate) {
         if (activate) {
             this.compare = true;
@@ -249,7 +178,7 @@ class ChapterContentController {
             return false;
         let cl = null;
         let idx = this.compareList.indexOf(iso);
-        angular.forEach(this.data,
+        angular.forEach(this.ExportService.data.data,
             (nat) => {
                 if (nat.iso == iso)
                     cl = nat;

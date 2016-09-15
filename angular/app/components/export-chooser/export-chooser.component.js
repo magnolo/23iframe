@@ -1,44 +1,75 @@
 class ExportChooserController{
-    constructor($scope, $timeout){
+    constructor(ExportService,$state){
         'ngInject';
 
-        this.$scope = $scope;
-        this.$timeout = $timeout;
-
-        this.index = 0;
-        this.activeList = [];
+        this.$state = $state;
+        this.ExportService = ExportService;
         //
     }
 
     $onInit(){
-        this.$timeout(
-            () => {
-                if (this.chapters) {
-                  if(angular.isDefined(this.selected)){
-                    if (this.selected.parent_id)
-                        angular.forEach(this.chapters,
-                            (chapter) => {
-                                if (chapter.id == this.selected.parent_id)
-                                    this.activeList = chapter.children;
-                            }
-                        );
-                    else{
-                        this.activeList = this.chapters;
-                    }
-                    this.index = this.activeList.indexOf(this.selected);
-                  }
 
+    }
+    gotoIndicator() {
+        if (this.ExportService.chapter.type == "indicator") {
+            var idx = 0;
+            angular.forEach(this.ExportService.exporter.items, (item, key) => {
+                if (item.id == this.ExportService.indicator.id) {
+                    idx = key;
                 }
+            })
+            if (angular.isDefined(this.$state.params.iso)) {
+                this.$state.go('app.export.detail.chapter.indicator.country', {
+                    chapter: idx + 1,
+                    indicator: this.ExportService.indicator.indicator_id,
+                    indiname: this.ExportService.indicator.name,
+                    iso: this.$state.params.iso
+                });
+            } else {
+                this.$state.go('app.export.detail.chapter.indicator', {
+                    chapter: idx + 1,
+                    indicator: this.ExportService.indicator.indicator_id,
+                    indiname: this.ExportService.indicator.name
+                });
             }
-        );
+        } else {
+            if (this.ExportService.chapter.id != this.ExportService.indicator.parent.id) {
+                var idx = 0;
+                angular.forEach(this.ExportService.exporter.items, (item, key) => {
+                    if (item.id == this.ExportService.indicator.parent.id) {
+                        idx = key;
+                    }
+                })
+                if (angular.isDefined(this.$state.params.iso)) {
+                    this.$state.go('app.export.detail.chapter.indicator.country', {
+                        chapter: idx + 1,
+                        indicator: this.ExportService.indicator.indicator_id,
+                        indiname: this.ExportService.indicator.name,
+                        iso: this.$state.params.iso
+                    });
+                } else {
+                    this.$state.go('app.export.detail.chapter.indicator', {
+                        chapter: idx + 1,
+                        indicator: this.ExportService.indicator.indicator_id,
+                        indiname: this.ExportService.indicator.name
+                    });
+                }
+            } else {
+                if (angular.isDefined(this.$state.params.iso)) {
+                    this.$state.go('app.export.detail.chapter.indicator.country', {
+                        indicator: this.ExportService.indicator.indicator_id,
+                        indiname: this.ExportService.indicator.name,
+                        iso: this.selectedCountry.iso
+                    });
+                } else {
+                    this.$state.go('app.export.detail.chapter.indicator', {
+                        indicator: this.ExportService.indicator.indicator_id,
+                        indiname: this.ExportService.indicator.name
+                    });
+                }
 
-        this.$scope.$watch('vm.index',
-            (n, o) => {
-                if (n === o) return false;
-                this.selected = this.activeList[this.index];
             }
-        );
-
+        }
     }
 
 }
@@ -47,12 +78,5 @@ export const ExportChooserComponent = {
     templateUrl: './views/app/components/export-chooser/export-chooser.component.html',
     controller: ExportChooserController,
     controllerAs: 'vm',
-    bindings: {
-        countries: '=',
-        nation: '=',
-        selected: '=?',
-        chapters: '=?',
-        changed: '&',
-        indicatorChange: '&?'
-    }
+    bindings: {  }
 }

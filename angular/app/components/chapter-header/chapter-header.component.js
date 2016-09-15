@@ -7,13 +7,18 @@ class ChapterHeaderController{
         this.DialogService = DialogService;
         this.$state = $state;
         this.$mdSidenav = $mdSidenav;
+        this.$scope = $scope;
+
+        // $scope.$on("stateChangeSuccess", () => {
+        //     this.gotoChapter();
+        // });
+
     }
 
     $onInit(){
     }
     gotoChapter(chapter){
       this.ExportService.getChapter(this.$state.params.id, chapter, (c, i) => {
-
 				if (this.$state.params.iso) {
 					this.$state.go('app.export.detail.chapter.indicator.country', {
 						chapter: chapter,
@@ -32,8 +37,7 @@ class ChapterHeaderController{
 			});
     }
     showData(){
-      this.$mdSidenav('right')
-                .toggle();
+      this.$mdSidenav('right').toggle();
     }
 }
 
