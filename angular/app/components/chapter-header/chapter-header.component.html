@@ -1,7 +1,7 @@
 
 <div class="md-toolbar-tools" flex ng-style="{'color': vm.ExportService.indicator.style.base_color || vm.ExportService.exporter.base_color}" >
 	<div layout="row" layout-align="start center" hide-xs hide-sm>
-    <md-button ui-sref="app.export.detail({id:vm.ExportService.exporter.id, name: vm.ExportService.exporter.name})" class="md-icon-button md-mini" ng-style="{'color': vm.ExportService.indicator.style.base_color || vm.ExportService.exporter.base_color}">
+    <md-button ng-if="vm.ExportService.exporter.style.fixed_title" ui-sref="app.export.detail({id:vm.ExportService.exporter.id, name: vm.ExportService.exporter.name})" class="md-icon-button md-mini" ng-style="{'color': vm.ExportService.indicator.style.base_color || vm.ExportService.exporter.base_color}">
       <md-icon ng-style="{'color': vm.ExportService.indicator.style.base_color || vm.ExportService.exporter.base_color}">home<md-icon>
     </md-button>
 		<div class="chapter" ng-if="vm.ExportService.exporter.items.length > 1">Chapter</div>
