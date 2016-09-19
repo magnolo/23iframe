@@ -114,6 +114,7 @@ class ChapterContentController {
                 if (angular.isFunction(callback)) {
                     callback();
                 }
+
                 this.$rootScope.isLoading = false;
             }, {
                 data: true
@@ -123,6 +124,7 @@ class ChapterContentController {
 
     getIndicator(callback) {
         this.ExportService.getIndicator(this.$state.params.id, this.$state.params.chapter, this.$state.params.indicator, (indicator, chapter, exporter) => {
+            this.$rootScope.noTitle = !this.ExportService.exporter.style.fixed_title;
             this.selectedIndicator = indicator;
             this.renderIndicator(indicator, callback);
         });

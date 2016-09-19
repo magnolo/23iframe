@@ -15,7 +15,7 @@
     <script type="text/javascript">document.location.href = '/unsupported-browser'</script>
     <![endif]-->
 </head>
-<body ng-class="{'iframed': $root.iframed, 'startup': $root.started, 'countrySelected': $root.countrySelected}" layout="column">
+<body ng-class="{'iframed': $root.iframed, 'startup': $root.started, 'countrySelected': $root.countrySelected, 'noTitle' : $root.noTitle}" layout="column">
 
 
     <!--div ui-view="header"></div-->

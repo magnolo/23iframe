@@ -1,5 +1,5 @@
 class ChapterHeaderController{
-    constructor($rootScope, $scope, $state, $mdSidenav, DialogService, ExportService){
+    constructor($state, $mdSidenav, DialogService, ExportService){
         'ngInject';
 
         //
@@ -7,11 +7,6 @@ class ChapterHeaderController{
         this.DialogService = DialogService;
         this.$state = $state;
         this.$mdSidenav = $mdSidenav;
-        this.$scope = $scope;
-
-        // $scope.$on("stateChangeSuccess", () => {
-        //     this.gotoChapter();
-        // });
 
     }
 

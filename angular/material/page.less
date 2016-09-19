@@ -65,15 +65,29 @@ body {
             //transform:translateY(-120%);
         }
     }
-    &.countrySelected {
+    &.countrySelected,
+    &.noTitle {
         @media screen and (max-width: 959px) {
             .Header {
                 margin-top: -48px;
             }
+        }
+    }
+    &.countrySelected {
+        @media screen and (max-width: 959px) {
             .angular-leaflet-map {
                 .legend {
                     transform: translateX(120%);
                 }
+            }
+        }
+    }
+    &.noTitle {
+        @media screen and (max-width: 959px) {
+            .Header {
+              .data-button{
+                top:100px;
+              }
             }
         }
     }
