@@ -310,9 +310,15 @@ export class MapService{
         if (!basemap) {
             this.basemap = basemap = this.fallbackBasemap;
         }
-        var attribution = (basemap.attribution || basemap.provider);
+        var attribution = "";
+        if(basemap.attribution){
+          attribution += basemap.attribution;
+        }
+        else if(basemap.provider){
+          attribution += 'Basemap by ' + basemap.provider;
+        }
         if(dataprovider){
-          attribution += ' | Data by <a href="'+dataprovider.url+'" target="_blank">' + dataprovider.title + '</a>';
+          attribution += ' | Data by <a href="' + dataprovider.url + '" target="_blank">' + dataprovider.title + '</a>';
         }
         this.layers.baselayers['xyz'] = {
             name: basemap.name,

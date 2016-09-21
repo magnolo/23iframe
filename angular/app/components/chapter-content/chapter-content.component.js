@@ -107,7 +107,8 @@ class ChapterContentController {
                     max: this.ExportService.data.max
                 }
                 item.style.color_range = this.MapService.parseColorRange(item.style.color_range);
-                this.MapService.setBaseLayer(item.style.basemap);
+                console.log(item);
+                this.MapService.setBaseLayer(item.style.basemap, item.indicator.dataprovider);
                 this.MapService.setMapDefaults(item.style);
                 this.MapService.setData(indicator.data, indicator, item.style.color_range ||  item.style.base_color, true);
 
